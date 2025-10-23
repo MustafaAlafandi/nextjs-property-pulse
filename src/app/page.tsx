@@ -1,9 +1,10 @@
 import React from 'react'
-
+import Link from 'next/link'
 function HomePage() {
   return (
     <div>
-      HomePage
+      <h1 className="text-3xl">Welcome</h1>
+      <Link href="/properties">Show Properties</Link>
     </div>
   )
 }
