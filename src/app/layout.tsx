@@ -2,6 +2,7 @@ import React from "react";
 import "@/assets/styles/globals.css";
 import { mainLayoutProps } from "@/types/basicTypes";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 export const metadata = {
   title: "PropertyPulse | Find The Perfect Rental",
   description: "Find Your Dream Rental Property",
@@ -14,6 +15,7 @@ const mainLayout: React.FC<mainLayoutProps> = ({ children }) => {
       <body>
         <Navbar />  
         <div>{children}</div>
+        <Footer />
       </body>
     </html>
   );
