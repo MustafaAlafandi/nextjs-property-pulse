@@ -6,7 +6,6 @@ import Link from "next/link";
 import logo from "../assets/images/logo-white.png";
 import profileDefault from "../assets/images/profile.png";
 import { FaGoogle } from "react-icons/fa";
-import { turborepoTraceAccess } from "next/dist/build/turborepo-access-trace";
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -19,7 +18,7 @@ function Navbar() {
     item === pathname ? "bg-black" : ""
   );
   const tabsBgBlackMobile = tabsBgBlack.map((item) =>
-    item === "bg-black" ? item + "-900" : item
+    item === "bg-black" ? "bg-gray-700" : item
   );
   const tabsVisibality = [true, true, isLoggedIn];
 
@@ -73,7 +72,7 @@ function Navbar() {
                       key={i}
                       href={tabsPathname[i]}
                       className={
-                        "text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2" +
+                        "text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 " +
                         tabsBgBlack[i]
                       }
                     >
@@ -204,7 +203,7 @@ function Navbar() {
                   key={i}
                   href={tabsPathname[i]}
                   className={
-                    "text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" +
+                    "text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium " +
                     tabsBgBlackMobile[i]
                   }
                 >
