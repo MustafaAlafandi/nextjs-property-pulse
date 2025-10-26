@@ -26,7 +26,6 @@ function PropertyCard({ property }: propertyCardProps) {
         alt=""
         height={300}
         width={600}
-        // sizes="100vw"
         className="object-cover rounded-t-xl"
       />
       <div className="p-4">

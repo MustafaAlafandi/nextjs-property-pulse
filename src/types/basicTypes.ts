@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Attributes } from "react";
 export interface mainLayoutProps {
   children?: React.ReactNode;
 }
@@ -6,7 +6,7 @@ export interface mainLayoutProps {
 export interface infoBoxProps {
   heading: string;
   backgroundColor?: string;
-  textColor?: String;
+  textColor?: string;
   buttonInfo: buttonInfoProps;
   children?: React.ReactNode;
 }
@@ -20,28 +20,28 @@ export interface propertyCardProps {
   property: propertyProps;
 }
 export interface propertyProps {
-  _id: String | number;
-  owner: String;
-  name: String;
-  type: String;
-  description: String;
+  _id: string;
+  owner: string;
+  name: string;
+  type: string;
+  description: string;
   location: locationProps;
   beds: 2;
   baths: 1;
   square_feet: 1500;
-  amenities: String[];
+  amenities: string[];
   rates: ratesProps;
   seller_info: sellerInfoProps;
-  images: String[];
+  images: string[];
   is_featured: boolean;
-  createdAt: String;
-  updatedAt: String;
+  createdAt: string;
+  updatedAt: string;
 }
 interface locationProps {
-  street: String;
-  city: String;
-  state: String;
-  zipcode: String;
+  street: string;
+  city: string;
+  state: string;
+  zipcode: string;
 }
 interface ratesProps {
   weekly?: number;
@@ -49,7 +49,7 @@ interface ratesProps {
   nightly?: number;
 }
 interface sellerInfoProps {
-  name: String;
-  email: String;
-  phone: String;
+  name: string;
+  email: string;
+  phone: string;
 }
