@@ -53,3 +53,9 @@ interface sellerInfoProps {
   email: string;
   phone: string;
 }
+
+export interface clipLoaderOptions {
+    loading: boolean;
+    name?: string;
+    size?: number;
+}
