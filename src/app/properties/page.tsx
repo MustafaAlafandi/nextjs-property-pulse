@@ -1,10 +1,14 @@
 import type { propertyProps } from "@/types/basicTypes";
 import PropertyCard from "@/components/PropertyCard";
-import {fetchProperties} from "@/utils/requests";
+import { fetchProperties } from "@/utils/requests";
 async function PropertiesPage() {
-  
-  const properties: propertyProps[] = await fetchProperties() as propertyProps[];
-  properties.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const properties: propertyProps[] =
+    (await fetchProperties()) as propertyProps[];
+  properties.sort((a: propertyProps, b: propertyProps) => {
+    const firstDate: Date = new Date(b.createdAt);
+    const secondDate: Date = new Date(a.createdAt);
+    return secondDate.getTime() - firstDate.getTime();
+  });
   return (
     <section className="px-4 py-6">
       <div className="container-xl lg:container m-auto">
