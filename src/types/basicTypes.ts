@@ -34,8 +34,8 @@ export interface propertyProps {
   seller_info: sellerInfoProps;
   images: string[];
   is_featured: boolean;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 interface locationProps {
   street: string;

@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import InfoBoxes from "@/components/InfoBoxes";
 import HomeProperites from "@/components/HomeProperites";
-async function HomePage() {
+function HomePage() {
   return (
     <>
       <Hero />
