@@ -55,7 +55,15 @@ interface sellerInfoProps {
 }
 
 export interface clipLoaderOptions {
-    loading: boolean;
-    name?: string;
-    size?: number;
+  loading: boolean;
+  name?: string;
+  size?: number;
 }
+
+export interface propertyHeaderImageProps {
+  image: string;
+}
+
+export interface propertyDetailsProps{
+  property: propertyProps;
+} 
