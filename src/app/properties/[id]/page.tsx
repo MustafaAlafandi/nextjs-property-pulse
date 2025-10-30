@@ -5,6 +5,7 @@ import { fetchProperty } from "@/utils/requests";
 import { FaArrowLeft } from "react-icons/fa";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
 import PropertyDetails from "@/components/PropertyDetails";
+import Spinner from "@/components/Spinner";
 function PropertyPage() {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
@@ -35,6 +36,7 @@ function PropertyPage() {
   }
   return (
     <>
+      {loading && <Spinner loading={loading} />}
       {!loading && property && (
         <>
           <PropertyHeaderImage image={property.images[0]} />
@@ -53,7 +55,7 @@ function PropertyPage() {
               {/* md:grid-cols-70-30 */}
               {/*  */}
               <div className="grid grid-cols-1 md:[grid-template-columns:70%_28%]  w-full gap-6">
-                <PropertyDetails property={property}/>
+                <PropertyDetails property={property} />
 
                 {/* <!-- Sidebar --> */}
                 <aside className="space-y-4">
