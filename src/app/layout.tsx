@@ -12,9 +12,9 @@ export const metadata = {
 const mainLayout: React.FC<mainLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
-      <body>
-        <Navbar />  
-        <div>{children}</div>
+      <body className = "flex flex-col min-h-screen">
+        <Navbar />
+        <div className="flex-grow">{children}</div>
         <Footer />
       </body>
     </html>
