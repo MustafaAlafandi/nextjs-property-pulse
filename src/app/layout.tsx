@@ -1,5 +1,6 @@
 import React from "react";
 import "@/assets/styles/globals.css";
+import AuthProvider from "@/components/AuthProvider";
 import { mainLayoutProps } from "@/types/basicTypes";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,6 +12,7 @@ export const metadata = {
 
 const mainLayout: React.FC<mainLayoutProps> = ({ children }) => {
   return (
+    <AuthProvider>
     <html lang="en">
       <body className = "flex flex-col min-h-screen">
         <Navbar />
@@ -18,6 +20,7 @@ const mainLayout: React.FC<mainLayoutProps> = ({ children }) => {
         <Footer />
       </body>
     </html>
+    </AuthProvider>
   );
 };
 
