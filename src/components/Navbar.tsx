@@ -10,7 +10,7 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 function Navbar() {
   const { data: session } = useSession();
-
+  
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [providers, setProviders] = useState(null);
@@ -28,7 +28,7 @@ function Navbar() {
 
   useEffect(() => {
     const setAuthProviders = async () => {
-      const res = await getProviders(); 
+      const res = await getProviders();
       setProviders(res);
     };
     setAuthProviders();

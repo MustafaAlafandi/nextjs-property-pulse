@@ -1,10 +1,9 @@
-import { Schema, model, models, Types, ObjectId } from "mongoose";
+import { Schema, model, models, ObjectId } from "mongoose";
 
 const PropertySchema = new Schema(
   {
     owner: {
-      type:
-      ObjectId,
+      type:ObjectId,
       ref: "User",
       required: true,
     },

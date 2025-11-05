@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, ObjectId } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -16,9 +16,7 @@ const userSchema = new Schema(
     },
     bookmarks: [
       {
-        type: Schema,
-        Types,
-        ObjectId,
+        type: ObjectId,
         ref: "Property",
       },
     ],
