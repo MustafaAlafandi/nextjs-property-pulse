@@ -11,11 +11,16 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 function Navbar() {
   let session;
   let signInHandler: Function;
+  let signOutHandler: Function;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   if (process.env.NEXT_PUBLIC_REGESTRING_ADDED == "true") {
     const { data } = useSession();
     session = data;
     signInHandler = (providerId: string) => signIn(providerId);
+    signOutHandler = () => {
+      setIsProfileMenuOpen(false);
+      signOut();
+    };  
   } else {
     if (isLoggedIn) {
       session = {
@@ -33,6 +38,11 @@ function Navbar() {
       setIsLoggedIn(true);
       localStorage.setItem("isLoggedIn", "true");
     };
+    signOutHandler = ()=>{
+      setIsProfileMenuOpen(false);
+      setIsLoggedIn(false);
+      localStorage.setItem("isLoggedIn", "false");
+    }
   }
   const profileImage = session?.user?.image;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -210,6 +220,7 @@ function Navbar() {
                     tabIndex={-1}
                   >
                     <Link
+                      onClick = {setIsProfileMenuOpen.bind(null,false)}
                       href="/profile"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
@@ -219,6 +230,7 @@ function Navbar() {
                       Your Profile
                     </Link>
                     <Link
+                      onClick = {setIsProfileMenuOpen.bind(null,false)}
                       href="/property/save"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
@@ -228,6 +240,7 @@ function Navbar() {
                       Saved Properties
                     </Link>
                     <button
+                      onClick={signOutHandler.bind(null)}
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex={-1}
