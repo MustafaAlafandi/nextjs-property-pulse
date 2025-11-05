@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import "@/assets/styles/globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import { mainLayoutProps } from "@/types/basicTypes";
