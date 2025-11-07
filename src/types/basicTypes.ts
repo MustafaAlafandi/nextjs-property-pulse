@@ -1,4 +1,4 @@
-import React, { Attributes } from "react";
+import React, { Attributes, ChangeEventHandler } from "react";
 export interface mainLayoutProps {
   children?: React.ReactNode;
 }
@@ -64,6 +64,18 @@ export interface propertyHeaderImageProps {
   image: string;
 }
 
-export interface propertyDetailsProps{
+export interface propertyDetailsProps {
   property: propertyProps;
-} 
+}
+
+
+export interface amenityCheckBoxProps {
+  amenity: amenityProps;
+}
+export interface amenityProps {
+  name: string;
+  id: string;
+  value: string;
+  isChecked: boolean;
+  changeHandler: ChangeEventHandler;
+}

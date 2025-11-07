@@ -1,4 +1,3 @@
-// middleware.js
 import authMiddleware from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
