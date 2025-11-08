@@ -1,6 +1,9 @@
 "use client";
-import { useState, useEffect } from "react";
-import { addPropertyFormDefaultInputs, amenities } from "@/constents/componentsConstents";
+import { useState, useEffect, ChangeEvent, ChangeEventHandler } from "react";
+import {
+  addPropertyFormDefaultInputs,
+  amenities,
+} from "@/constents/componentsConstents";
 import AmenityCheckBox from "./AmenityCheckBox";
 function PropertyAddForm() {
   const [mounted, setMounted] = useState(false);
@@ -9,9 +12,63 @@ function PropertyAddForm() {
     setMounted(true);
   }, []);
 
-  const handleChange = () => {};
-  const handleAmenitiesChange = () => {};
-  const handleImageChange = () => {};
+  const handleChange: ChangeEventHandler = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    // Check if nested property
+    if (name.includes(".")) {
+      const [outerKey, innerKey] = name.split(".");
+      setFields((pre) => ({
+        ...pre,
+        [outerKey]: {
+          ...pre[outerKey],
+          [innerKey]: value,
+        },
+      }));
+    }
+    // Not nested property case
+    setFields((pre) => ({ ...pre, [name]: value }));
+  };
+  const handleAmenitiesChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+
+    // Cloen the current array
+    const updatedAmenities = [...fields.amenities];
+
+    if (checked) {
+      // Add Value to array
+      updatedAmenities.push(value);
+    } else {
+      //Remove value from array
+      const index = updatedAmenities.indexOf(value);
+      if (index !== -1) {
+        updatedAmenities.splice(index, 1);
+      }
+    }
+
+    // Update state with updated array
+    setFields((pre) => ({ ...pre, amenities: updatedAmenities }));
+  };
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+
+    // Clone images array
+    const updatedImages: File = [...fields.images];
+    if(files)
+    {
+
+      for (const file of files) {
+        updatedImages.push(file);
+      }
+    }
+
+    // UPdate state with array of images
+    setFields((pre)=>({
+      ...pre,
+      images:updatedImages,
+    }));
+  };
   return (
     mounted && (
       <form>
@@ -68,7 +125,7 @@ function PropertyAddForm() {
             className="border rounded w-full py-2 px-3"
             rows={4}
             placeholder="Add an optional description of your property"
-            value={fields.describtion}
+            value={fields.description}
             onChange={handleChange}
           ></textarea>
         </div>
@@ -174,8 +231,8 @@ function PropertyAddForm() {
             Amenities
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {amenities.map((ele) => (
-              <AmenityCheckBox
+            {amenities.map((ele,index) => (
+              <AmenityCheckBox key={index}
                 amenity={{
                   ...ele,
                   isChecked: fields.amenities.includes(ele.value),
@@ -183,189 +240,6 @@ function PropertyAddForm() {
                 }}
               />
             ))}
-            {/* <div>
-              <input
-                type="checkbox"
-                id="amenity_wifi"
-                name="amenities"
-                value="Wifi"
-                className="mr-2"
-                checked={fields.amenities.includes("Wifi")}
-              />
-              <label htmlFor="amenity_wifi">Wifi</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_kitchen"
-                name="amenities"
-                value="Full Kitchen"
-                className="mr-2"
-                checked={fields.amenities.includes("Full Kitchen")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_kitchen">Full kitchen</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_washer_dryer"
-                name="amenities"
-                value="Washer & Dryer"
-                className="mr-2"
-                checked={fields.amenities.includes("Wifi")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_washer_dryer">Washer & Dryer</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_free_parking"
-                name="amenities"
-                value="Free Parking"
-                className="mr-2"
-                checked={fields.amenities.includes("Free Parking")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_free_parking">Free Parking</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_pool"
-                name="amenities"
-                value="Swimming Pool"
-                className="mr-2"
-                checked={fields.amenities.includes("Swimming Pool")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_pool">Swimming Pool</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_hot_tub"
-                name="amenities"
-                value="Hot Tub"
-                className="mr-2"
-                checked={fields.amenities.includes("Hot Tub")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_hot_tub">Hot Tub</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_24_7_security"
-                name="amenities"
-                value="24/7 Security"
-                className="mr-2"
-                checked={fields.amenities.includes("24_7_Security")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_24_7_security">24/7 Security</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_wheelchair_accessible"
-                name="amenities"
-                value="Wheelchair Accessible"
-                className="mr-2"
-                onChange={handleAmenitiesChange}
-                checked={fields.amenities.includes("Wheelchair Accessible")}
-              />
-              <label htmlFor="amenity_wheelchair_accessible">
-                Wheelchair Accessible
-              </label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_elevator_access"
-                name="amenities"
-                value="Elevator Access"
-                className="mr-2"
-                checked={fields.amenities.includes("Elevator Access")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_elevator_access">Elevator Access</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_dishwasher"
-                name="amenities"
-                value="Dishwasher"
-                className="mr-2"
-                checked={fields.amenities.includes("Elevator Access")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_dishwasher">Dishwasher</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_gym_fitness_center"
-                name="amenities"
-                value="Gym/Fitness Center"
-                className="mr-2"
-                checked={fields.amenities.includes("Elevator Access")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_gym_fitness_center">
-                Gym/Fitness Center
-              </label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_air_conditioning"
-                name="amenities"
-                value="Air Conditioning"
-                className="mr-2"
-                checked={fields.amenities.includes("Elevator Access")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_air_conditioning">Air Conditioning</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_balcony_patio"
-                name="amenities"
-                value="Balcony/Patio"
-                className="mr-2"
-                checked={fields.amenities.includes("Elevator Access")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_balcony_patio">Balcony/Patio</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_smart_tv"
-                name="amenities"
-                value="Smart TV"
-                className="mr-2"
-                checked={fields.amenities.includes("Elevator Access")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_smart_tv">Smart TV</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="amenity_coffee_maker"
-                name="amenities"
-                value="Coffee Maker"
-                className="mr-2"
-                checked={fields.amenities.includes("Elevator Access")}
-                onChange={handleAmenitiesChange}
-              />
-              <label htmlFor="amenity_coffee_maker">Coffee Maker</label>
-            </div> */}
           </div>
         </div>
 

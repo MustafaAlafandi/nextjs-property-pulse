@@ -3,7 +3,7 @@ import { amenityProps } from "@/types/basicTypes";
 const addPropertyFormDefaultInputs = {
     type: "Apartment",
     name: "Test Propety",
-    describtion: "",
+    description: "",
     location: {
       street: "",
       city: "Test City",
