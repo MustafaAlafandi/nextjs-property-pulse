@@ -55,23 +55,21 @@ function PropertyAddForm() {
 
     // Clone images array
     const updatedImages: File = [...fields.images];
-    if(files)
-    {
-
+    if (files) {
       for (const file of files) {
         updatedImages.push(file);
       }
     }
 
     // UPdate state with array of images
-    setFields((pre)=>({
+    setFields((pre) => ({
       ...pre,
-      images:updatedImages,
+      images: updatedImages,
     }));
   };
   return (
     mounted && (
-      <form>
+      <form action="/api/properties" method="POST" encType="multipart/form-data">
         <h2 className="text-3xl text-center font-semibold mb-6">
           Add Property
         </h2>
@@ -231,8 +229,9 @@ function PropertyAddForm() {
             Amenities
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {amenities.map((ele,index) => (
-              <AmenityCheckBox key={index}
+            {amenities.map((ele, index) => (
+              <AmenityCheckBox
+                key={index}
                 amenity={{
                   ...ele,
                   isChecked: fields.amenities.includes(ele.value),
@@ -358,6 +357,7 @@ function PropertyAddForm() {
             accept="image/*"
             multiple
             onChange={handleImageChange}
+            required
           />
         </div>
 
