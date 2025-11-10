@@ -34,6 +34,7 @@ function PropertyPage() {
       </h1>
     );
   }
+  console.log("property",property);
   return (
     <>
       {loading && <Spinner loading={loading} />}
