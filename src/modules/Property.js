@@ -3,7 +3,7 @@ import { Schema, model, models, ObjectId } from "mongoose";
 const PropertySchema = new Schema(
   {
     owner: {
-      type:ObjectId,
+      type: ObjectId,
       ref: "User",
       required: true,
     },
@@ -49,7 +49,7 @@ const PropertySchema = new Schema(
         type: String,
       },
     ],
-    rate: {
+    rates: {
       nightly: {
         type: Number,
       },
@@ -58,6 +58,7 @@ const PropertySchema = new Schema(
       },
       monthly: {
         type: Number,
+        required: true,
       },
     },
     seller_info: {
@@ -73,7 +74,7 @@ const PropertySchema = new Schema(
     },
     images: [
       {
-       type: String,
+        type: String,
       },
     ],
     is_featured: {

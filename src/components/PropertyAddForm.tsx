@@ -271,6 +271,7 @@ function PropertyAddForm() {
                 className="border rounded w-full py-2 px-3"
                 value={fields.rates.monthly}
                 onChange={handleChange}
+                required
               />
             </div>
             <div className="flex items-center">

@@ -1,5 +1,5 @@
 
-import connectDB from "@/config/database";
+import {connectDB,disconnectDB} from "@/config/database";
 import Property from "@/modules/Property";
 // GET api/properties/:id
 export const GET = async (
@@ -18,5 +18,7 @@ export const GET = async (
   } catch (err) {
     console.error(err);
     return new Response("Something Went Wrong", { status: 500 });
+  }finally{
+    await disconnectDB();
   }
 };

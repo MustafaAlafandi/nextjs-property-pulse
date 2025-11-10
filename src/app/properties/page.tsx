@@ -9,6 +9,7 @@ async function PropertiesPage() {
     const secondDate: Date = new Date(a.createdAt);
     return secondDate.getTime() - firstDate.getTime();
   });
+  console.log(properties);
   return (
     <section className="px-4 py-6">
       <div className="container-xl lg:container m-auto">
