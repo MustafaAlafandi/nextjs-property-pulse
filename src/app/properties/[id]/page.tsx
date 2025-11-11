@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { fetchProperty } from "@/utils/requests";
 import { FaArrowLeft } from "react-icons/fa";
+import PropertyImages from "@/components/PropertyImages";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
 import PropertyDetails from "@/components/PropertyDetails";
 import Spinner from "@/components/Spinner";
@@ -145,6 +146,7 @@ function PropertyPage() {
               </div>
             </div>
           </section>
+          <PropertyImages images={property.images}/>
         </>
       )}
     </>

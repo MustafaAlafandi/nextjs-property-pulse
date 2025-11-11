@@ -1,8 +1,11 @@
-import Image from 'next/image'
-import {propertyHeaderImageProps} from "@/types/basicTypes";
-function PropertyHeaderImage({image}:propertyHeaderImageProps) {
-  console.log("image",image);
-  const imageUrl = image.includes("https")?image:`/images/properties/${image}`;  
+import Image from "next/image";
+import { propertyHeaderImageProps } from "@/types/basicTypes";
+function PropertyHeaderImage({ image }: propertyHeaderImageProps) {
+  console.log("image", image);
+  const imageUrl = image; 
+  // const imageUrl = image.includes("https")
+  //   ? image
+  //   : `/images/properties/${image}`;
   return (
     <section>
       <div className="container-xl m-auto">
@@ -17,7 +20,7 @@ function PropertyHeaderImage({image}:propertyHeaderImageProps) {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default PropertyHeaderImage
+export default PropertyHeaderImage;

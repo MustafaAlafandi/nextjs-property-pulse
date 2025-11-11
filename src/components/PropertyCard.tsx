@@ -9,6 +9,12 @@ import {
   FaMapMarker,
 } from "react-icons/fa";
 function PropertyCard({ property }: propertyCardProps) {
+  console.log("property",property);
+  console.log("property.imagres[0]",property.images[0]);
+  const imageUrl = property.images[0];
+  // const imageUrl = property.images[0].includes("https")
+  //   ? property.images[0]
+  //   : `/images/properties/${property.images[0]}`;
   const getRateDisplay = () => {
     const { rates } = property;
     if (rates.monthly) {
@@ -22,7 +28,7 @@ function PropertyCard({ property }: propertyCardProps) {
   return (
     <div className="bg-white rounded-xl shadow-md relative">
       <Image
-        src={`/images/properties/${property.images[0]}`}
+        src={imageUrl  }
         alt=""
         height={300}
         width={600}

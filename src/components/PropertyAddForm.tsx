@@ -69,7 +69,11 @@ function PropertyAddForm() {
   };
   return (
     mounted && (
-      <form action="/api/properties" method="POST" encType="multipart/form-data">
+      <form
+        action="/api/properties"
+        method="POST"
+        encType="multipart/form-data"
+      >
         <h2 className="text-3xl text-center font-semibold mb-6">
           Add Property
         </h2>
@@ -218,6 +222,7 @@ function PropertyAddForm() {
               name="square_feet"
               className="border rounded w-full py-2 px-3"
               required
+              step={100}
               value={fields.square_feet}
               onChange={handleChange}
             />
