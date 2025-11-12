@@ -1,4 +1,5 @@
-import React,{useState} from "react";
+import React from "react";
+import { ToastContainer } from "react-toastify";
 import "@/assets/styles/globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import { mainLayoutProps } from "@/types/basicTypes";
@@ -13,13 +14,14 @@ export const metadata = {
 const mainLayout: React.FC<mainLayoutProps> = ({ children }) => {
   return (
     <AuthProvider>
-    <html lang="en">
-      <body className = "flex flex-col min-h-screen">
-        <Navbar />
-        <div className="flex-grow">{children}</div>
-        <Footer />
-      </body>
-    </html>
+      <html lang="en">
+        <body className="flex flex-col min-h-screen">
+          <Navbar />
+          <div className="flex-grow">{children}</div>
+          <Footer />
+          <ToastContainer />
+        </body>
+      </html>
     </AuthProvider>
   );
 };

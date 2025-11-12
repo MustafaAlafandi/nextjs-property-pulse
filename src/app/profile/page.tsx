@@ -7,6 +7,7 @@ import profileDefault from "@/assets/images/profile.png";
 import Spinner from "@/components/Spinner";
 import type { Session } from "next-auth";
 import { propertyProps } from "@/types/basicTypes";
+import { toast } from "react-toastify";
 function ProfilePage() {
   let session:
     | Session
@@ -69,13 +70,13 @@ function ProfilePage() {
         //Remove the property from state
         const updatedProperties = properties.filter((property)=> property._id !== id);
         setProperties(updatedProperties);
-        alert('Property Deleted');
+        toast.success('Property Deleted');
       }else{
-        alert('Failed to delete property')
+        toast.error('Failed to delete property')
       }
     }catch(err){
       console.error(err);
-      alert('Failed to delete property')
+      toast.error('Failed to delete property')
     }
   };
   return (
