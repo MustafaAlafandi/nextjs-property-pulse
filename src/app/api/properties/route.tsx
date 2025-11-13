@@ -32,8 +32,8 @@ export const POST = async (request: Request) => {
       userId = process.env.NEXT_PUBLIC_TEST_PROFILE_ID;
     }
     const formData = await request.formData();
-    // Access all values from amenties and images
-    const amenties = formData.getAll("amenties");
+    // Access all values from amenities and images
+    const amenities = formData.getAll("amenities");
     const images = formData
       .getAll("images")
       .filter((image) => image.name !== "");
@@ -52,7 +52,7 @@ export const POST = async (request: Request) => {
       beds: formData.get("beds"),
       baths: formData.get("baths"),
       square_feet: formData.get("square_feet"),
-      amenties,
+      amenities,
       rates: {
         weekly: formData.get("rates.weekly"),
         monthly: formData.get("rates.monthly"),
@@ -97,6 +97,7 @@ export const POST = async (request: Request) => {
       `${process.env.NEXTAUTH_URL}/properties/${newProperty._id}`
     );
   } catch (err) {
+    console.error(err);
     return new Response("failed to add property", { status: 500 });
   } finally {
     await disconnectDB();

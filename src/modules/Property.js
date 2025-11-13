@@ -53,7 +53,7 @@ const PropertySchema = new Schema(
       nightly: {
         type: Number,
       },
-      weakly: {
+      weekly: {
         type: Number,
       },
       monthly: {

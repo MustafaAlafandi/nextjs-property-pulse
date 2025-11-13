@@ -73,7 +73,6 @@ export interface amenityCheckBoxProps {
   amenity: amenityProps;
 }
 export interface amenityProps {
-  name: string;
   id: string;
   value: string;
   isChecked: boolean;
