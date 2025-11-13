@@ -6,11 +6,11 @@ function AmenityCheckBox({ amenity }: amenityCheckBoxProps) {
       <input
         type="checkbox"
         id={amenity.id}
-        name={amenity.name}
+        name="amenities"
         value={amenity.value}
         className="mr-2"
         checked={amenity.isChecked}
-        onChange={amenity.changeHandler}    
+        onChange={amenity.changeHandler}
       />
       <label htmlFor={amenity.id}>{amenity.value}</label>
     </div>

@@ -67,6 +67,7 @@ function PropertyAddForm() {
       images: updatedImages,
     }));
   };
+  console.log("amenities",fields.amenities);
   return (
     mounted && (
       <form
@@ -305,7 +306,7 @@ function PropertyAddForm() {
           <input
             type="text"
             id="seller_name"
-            name="seller_info.name."
+            name="seller_info.name"
             className="border rounded w-full py-2 px-3"
             placeholder="Name"
             value={fields.seller_info.name}
