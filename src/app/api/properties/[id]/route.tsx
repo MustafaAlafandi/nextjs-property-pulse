@@ -127,11 +127,7 @@ export const PUT = async (request: Request,{ params }: { params: Promise<{ id: s
       },
       owner: userId,
     };
-    
-    //Update property in database
-    const updatedProperty = await Property.findByIdAndUpdate(id,propertyData);
-    
-
+     
     return new Response(JSON.stringify(updatedProperty),{status:200});
   } catch (err) {
     console.error(err);

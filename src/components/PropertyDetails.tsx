@@ -7,6 +7,7 @@ import {
   FaCheck,
   FaMapMarker,
 } from "react-icons/fa";
+import { Map } from "./Map";
 function PropertyDetails({ property }: propertyDetailsProps) {
   return (
     <main>
@@ -89,6 +90,17 @@ function PropertyDetails({ property }: propertyDetailsProps) {
           ))}
         </ul>
       </div>
+
+      <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+        <Map
+          center={{ lng: -0.1278, lat: 51.5074 }}
+          location={{
+            lat: 51.5074,
+            lng: -0.1278,
+          }}
+        />
+      </div>
+
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">
         <div id="map"></div>
       </div>

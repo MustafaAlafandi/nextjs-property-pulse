@@ -37,6 +37,9 @@ function ProfilePage() {
 
   const [properties, setProperties] = useState<propertyProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [deleteAlertResult, setDeleteAlertResult] = useState(false);
+  const [deletedPropertyId, setDeletedPropertyId] = useState("");
   useEffect(() => {
     const fetchUserProperties = async (userId: string) => {
       if (!userId) {
@@ -55,28 +58,32 @@ function ProfilePage() {
         setLoading(false);
       }
     };
+    const deleteProperty = async (id: string) => {};
     // Fetch User Properties when session is available
     if (session?.user?.id) {
       fetchUserProperties(session.user.id);
     }
   }, [session]);
   const handleDeleteProperty = async (id: string) => {
-    const confirmed = window.confirm("Are you sure you want to delete this property?");
-    if(!confirm)
-      return;
-    try{
-      const res = await fetch( `/api/properties/${id}`,{method:'DELETE'})
-      if(res.status === 200){
+    const result = window.confirm(
+      "Are you sure you want to delete this property?"
+    );
+    if (!result) return;
+    try {
+      const res = await fetch(`/api/properties/${id}`, { method: "DELETE" });
+      if (res.status === 200) {
         //Remove the property from state
-        const updatedProperties = properties.filter((property)=> property._id !== id);
+        const updatedProperties = properties.filter(
+          (property) => property._id !== id
+        );
         setProperties(updatedProperties);
-        toast.success('Property Deleted');
-      }else{
-        toast.error('Failed to delete property')
+        toast.success("Property Deleted");
+      } else {
+        toast.error("Failed to delete property");
       }
-    }catch(err){
+    } catch (err) {
       console.error(err);
-      toast.error('Failed to delete property')
+      toast.error("Failed to delete property");
     }
   };
   return (
@@ -139,7 +146,7 @@ function ProfilePage() {
                       <button
                         className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
                         type="button"
-                        onClick={handleDeleteProperty.bind(null,property._id)}
+                        onClick={handleDeleteProperty.bind(null, property._id)}
                       >
                         Delete
                       </button>

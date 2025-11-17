@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { propertyHeaderImageProps } from "@/types/basicTypes";
 function PropertyHeaderImage({ image }: propertyHeaderImageProps) {

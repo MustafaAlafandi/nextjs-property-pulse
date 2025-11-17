@@ -7,15 +7,16 @@ import PropertyImages from "@/components/PropertyImages";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
 import PropertyDetails from "@/components/PropertyDetails";
 import Spinner from "@/components/Spinner";
+import { propertyProps } from "@/types/basicTypes";
 function PropertyPage() {
   const { id } = useParams();
-  const [property, setProperty] = useState(null);
+  const [property, setProperty] = useState<propertyProps | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function fetchPropertyData() {
       if (!id) return;
       try {
-        const property = await fetchProperty(id);
+        const property:propertyProps = await fetchProperty(id);
         setProperty(property);
       } catch (err) {
         console.error("Error fetching property:", err);

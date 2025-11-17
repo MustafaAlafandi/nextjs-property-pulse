@@ -90,4 +90,5 @@ const amenities: Pick<amenityProps, "id" | "value">[] = [
   },
 ];
 
+export const mapTypes = ["roadmap" , "satellite" , "hybrid" , "terrain"];
 export {amenities,addPropertyFormDefaultInputs};
