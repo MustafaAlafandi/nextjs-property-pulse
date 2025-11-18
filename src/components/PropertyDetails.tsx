@@ -13,6 +13,8 @@ import {
 import { Map } from "./Map";
 import Spinner from "./Spinner";
 function PropertyDetails({ property }: propertyDetailsProps) {
+  const [geoLoading, setGeoLoading] = useState<boolean>(true);
+  const [geoError, setGeoError] = useState<boolean>(false);
   const [geoLocation, setGeoLocation] = useState<{
     lat: number;
     lon: number;
@@ -25,7 +27,12 @@ function PropertyDetails({ property }: propertyDetailsProps) {
         if (result) {
           result.lat = Number(result.lat);
           result.lon = Number(result.lon);
-          setGeoLocation(result);}
+          setGeoLocation(result);
+          setGeoError(false);
+        } else {
+          setGeoError(true);
+        }
+        setGeoLoading(false);
       }
     }
     getLocation();
@@ -113,13 +120,17 @@ function PropertyDetails({ property }: propertyDetailsProps) {
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-        {geoLocation ? (
-          <Map
-            center={{ lng: geoLocation?.lon, lat: geoLocation?.lat }}
-            location={{ lng: geoLocation?.lon, lat: geoLocation?.lat }}
-          />
+        {geoLoading ? (
+          <Spinner loading={true} />
+        ) : geoError ? (
+          <p className="text-xl">No Location Data Found.</p>
         ) : (
-          <Spinner loading={true}/>
+          geoLocation && (
+            <Map
+              center={{ lng: geoLocation?.lon, lat: geoLocation?.lat }}
+              location={{ lng: geoLocation?.lon, lat: geoLocation?.lat }}
+            />
+          )
         )}
       </div>
 
