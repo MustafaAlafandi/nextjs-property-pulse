@@ -1,4 +1,7 @@
+"use client";
+import { useState, useEffect } from "react";
 import { propertyDetailsProps } from "@/types/basicTypes";
+import { getGeoLocation } from "@/utils/helpfulFunctions";
 import {
   FaBed,
   FaBath,
@@ -8,7 +11,25 @@ import {
   FaMapMarker,
 } from "react-icons/fa";
 import { Map } from "./Map";
+import Spinner from "./Spinner";
 function PropertyDetails({ property }: propertyDetailsProps) {
+  const [geoLocation, setGeoLocation] = useState<{
+    lat: number;
+    lon: number;
+  } | null>(null);
+  useEffect(() => {
+    async function getLocation() {
+      if (!geoLocation && property) {
+        const { location } = property;
+        const result = await getGeoLocation(location);
+        if (result) {
+          result.lat = Number(result.lat);
+          result.lon = Number(result.lon);
+          setGeoLocation(result);}
+      }
+    }
+    getLocation();
+  }, []);
   return (
     <main>
       <div className="bg-white p-6 rounded-lg shadow-md text-center md:text-left">
@@ -92,13 +113,14 @@ function PropertyDetails({ property }: propertyDetailsProps) {
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-        <Map
-          center={{ lng: -0.1278, lat: 51.5074 }}
-          location={{
-            lat: 51.5074,
-            lng: -0.1278,
-          }}
-        />
+        {geoLocation ? (
+          <Map
+            center={{ lng: geoLocation?.lon, lat: geoLocation?.lat }}
+            location={{ lng: geoLocation?.lon, lat: geoLocation?.lat }}
+          />
+        ) : (
+          <Spinner loading={true}/>
+        )}
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">

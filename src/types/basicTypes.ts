@@ -37,7 +37,7 @@ export interface propertyProps {
   createdAt: Date;
   updatedAt: Date;
 }
-interface locationProps {
+export interface locationProps {
   street: string;
   city: string;
   state: string;

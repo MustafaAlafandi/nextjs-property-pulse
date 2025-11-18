@@ -39,19 +39,16 @@ export const DELETE = async (
       }
 
       userId = sessionUser.userId;
-
     } else {
-
       userId = process.env.NEXT_PUBLIC_TEST_PROFILE_ID;
-      
     }
     await connectDB();
 
-    console.log("userId",userId);
+    console.log("userId", userId);
 
     const property = await Property.findById(id);
 
-    console.log("property",property);
+    console.log("property", property);
 
     if (!property) {
       return new Response("Property not Found", { status: 404 });
@@ -72,9 +69,12 @@ export const DELETE = async (
   }
 };
 // PUT /api/properties/:id
-export const PUT = async (request: Request,{ params }: { params: Promise<{ id: string }> }) => {
+export const PUT = async (
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) => {
   try {
-    const {id} = await params;
+    const { id } = await params;
     await connectDB();
     let userId;
     if (process.env.NEXT_PUBLIC_REGESTRING_ADDED === "true") {
@@ -89,17 +89,16 @@ export const PUT = async (request: Request,{ params }: { params: Promise<{ id: s
     const formData = await request.formData();
     // Access all values from amenities and images
     const amenities = formData.getAll("amenities");
-    
-    // Get property to update 
+
+    // Get property to update
     const existingProperty = await Property.findById(id);
-    if(!existingProperty)
-    {
-      return new Response("Property does NOT exist",{status:404});
+    if (!existingProperty) {
+      return new Response("Property does NOT exist", { status: 404 });
     }
-    // Verify ownership 
-    if(existingProperty.owner.toString() !== userId){
-      return new Response("Unauthorized",{status:401});
-    } 
+    // Verify ownership
+    if (existingProperty.owner.toString() !== userId) {
+      return new Response("Unauthorized", { status: 401 });
+    }
     // Create PropertyData object for database
     const propertyData = {
       type: formData.get("type"),
@@ -127,8 +126,12 @@ export const PUT = async (request: Request,{ params }: { params: Promise<{ id: s
       },
       owner: userId,
     };
-     
-    return new Response(JSON.stringify(updatedProperty),{status:200});
+    const updatedProperty = await Property.findByIdAndUpdate(
+      existingProperty._id,
+      { $set: propertyData },
+      { new: true }
+    );
+    return new Response(JSON.stringify(updatedProperty), { status: 200 });
   } catch (err) {
     console.error(err);
     return new Response("Failed to add property", { status: 500 });

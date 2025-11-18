@@ -7,27 +7,27 @@ import PropertyImages from "@/components/PropertyImages";
 import PropertyHeaderImage from "@/components/PropertyHeaderImage";
 import PropertyDetails from "@/components/PropertyDetails";
 import Spinner from "@/components/Spinner";
-import { propertyProps } from "@/types/basicTypes";
+import { locationProps, propertyProps } from "@/types/basicTypes";
+import { getGeoLocation } from "@/utils/helpfulFunctions";
 function PropertyPage() {
   const { id } = useParams();
   const [property, setProperty] = useState<propertyProps | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function fetchPropertyData() {
-      if (!id) return;
-      try {
-        const property:propertyProps = await fetchProperty(id);
-        setProperty(property);
-      } catch (err) {
-        console.error("Error fetching property:", err);
-      } finally {
-        setLoading(false);
+      if (property === null) {
+        if (!id) return;
+        try {
+          const property: propertyProps = await fetchProperty(id);
+          setProperty(property);
+        } catch (err) {
+          console.error("Error fetching property:", err);
+        } finally {
+          setLoading(false);
+        }
       }
     }
-
-    if (property === null) {
-      fetchPropertyData();
-    }
+    fetchPropertyData();
   }, [id, property]);
   if (!property && !loading) {
     return (
@@ -36,7 +36,6 @@ function PropertyPage() {
       </h1>
     );
   }
-  console.log("property",property);
   return (
     <>
       {loading && <Spinner loading={loading} />}
@@ -147,7 +146,7 @@ function PropertyPage() {
               </div>
             </div>
           </section>
-          <PropertyImages images={property.images}/>
+          <PropertyImages images={property.images} />
         </>
       )}
     </>
