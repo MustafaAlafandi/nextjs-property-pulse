@@ -1,4 +1,4 @@
-import { connectDB, disconnectDB } from "@/config/database";
+import { connectDB } from "@/config/database";
 import Property from "@/modules/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
 // GET api/properties/:id
@@ -18,8 +18,6 @@ export const GET = async (
   } catch (err) {
     console.error(err);
     return new Response("Something Went Wrong", { status: 500 });
-  } finally {
-    await disconnectDB();
   }
 };
 
@@ -64,8 +62,6 @@ export const DELETE = async (
   } catch (err) {
     console.error(err);
     return new Response("Something Went Wrong", { status: 500 });
-  } finally {
-    await disconnectDB();
   }
 };
 // PUT /api/properties/:id
@@ -136,6 +132,6 @@ export const PUT = async (
     console.error(err);
     return new Response("Failed to add property", { status: 500 });
   } finally {
-    await disconnectDB();
+    // await ();
   }
 };

@@ -1,4 +1,4 @@
-import { connectDB, disconnectDB } from "@/config/database";
+import { connectDB,  } from "@/config/database";
 import Property from "@/modules/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
 // GET /api/properties/user/:userId
@@ -23,6 +23,6 @@ export const GET = async (
     console.log(err);
     return new Response("Something Went Wrong", { status: 500 });
   } finally {
-    await disconnectDB();
+    // await ();
   }
 };

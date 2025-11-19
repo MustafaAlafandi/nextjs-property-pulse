@@ -1,4 +1,4 @@
-import { connectDB, disconnectDB } from "@/config/database";
+import { connectDB } from "@/config/database";
 import Property from "@/modules/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudniary";
@@ -14,8 +14,6 @@ export const GET = async () => {
   } catch (err) {
     console.log(err);
     return new Response("Something Went Wrong", { status: 500 });
-  } finally {
-    await disconnectDB();
   }
 };
 export const POST = async (request: Request) => {
@@ -99,7 +97,5 @@ export const POST = async (request: Request) => {
   } catch (err) {
     console.error(err);
     return new Response("failed to add property", { status: 500 });
-  } finally {
-    await disconnectDB();
   }
 };

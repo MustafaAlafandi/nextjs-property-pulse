@@ -9,6 +9,7 @@ export const POST = async (request: Request) => {
     const { propertyId } = await request.json();
     const sessionUser = await getSessionUser();
     let userId;
+    
     if (process.env.NEXT_PUBLIC_REGESTRING_ADDED === "true") {
       if (!sessionUser || !sessionUser.userId) {
         return new Response("User ID is required", {
@@ -26,23 +27,7 @@ export const POST = async (request: Request) => {
     // Check if property is bookmarked
     let isBookmarked = user.bookmarks.includes(propertyId);
 
-    let message;
-
-    if (isBookmarked) {
-      // If alread bookmarked, remove it
-      user.bookmarks.pull(propertyId);
-      message = "Bookmark removed successfully";
-      isBookmarked = false;
-    } else {
-      // If not isBookmarked, add it
-      user.bookmarks.push(propertyId);
-      message = "Bookmark added successfully";
-      isBookmarked = true;
-    }
-
-    await user.save();
-
-    return new Response(JSON.stringify({ message, isBookmarked }), {
+    return new Response(JSON.stringify({isBookmarked }), {
       status: 200,
     });
   } catch (err) {

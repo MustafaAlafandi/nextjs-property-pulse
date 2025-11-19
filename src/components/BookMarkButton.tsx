@@ -14,6 +14,34 @@ function BookMarkButton({ property }: { property: propertyProps }) {
   }
 
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (!userId) {
+      setLoading(false);
+      return;
+    }
+    const checkBookmarkStatus = async () => {
+      try {
+        const res = await fetch("/api/bookmarks/check", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ propertyId: property._id }),
+        });
+
+        if (res.status === 200) {
+          const data = await res.json();
+          setIsBookmarked(data.isBookmarked);
+        }
+      } catch (err) {
+        console.error(err);
+      }finally{
+        setLoading(false);
+      }
+    };
+    checkBookmarkStatus();
+  }, [property._id, userId]);
   const handleClick = async () => {
     if (!userId) {
       toast.error("You need to sign in to bookmark a property");
@@ -32,6 +60,7 @@ function BookMarkButton({ property }: { property: propertyProps }) {
       if (res.status === 200) {
         const data = await res.json();
         toast.success(data.message);
+        console.log("isBookmarked",data.isBookmarked);
         setIsBookmarked(data.isBookmarked);
       }
     } catch (err) {
@@ -39,12 +68,16 @@ function BookMarkButton({ property }: { property: propertyProps }) {
       toast.error("Something went wrong");
     }
   };
+  if (loading) return <p className="text-center">Loading...</p>;
   return (
     <button
       onClick={handleClick}
-      className="bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
+      className={`bg-${isBookmarked ? "red" : "blue"}-500 hover:bg-${
+        isBookmarked ? "red" : "blue"
+      }-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center`}
     >
-      <FaBookmark className="mr-2" /> Bookmark Property
+      <FaBookmark className="mr-2" />{" "}
+      {`${isBookmarked?"Remove":""} Bookmark Property`}
     </button>
   );
 }

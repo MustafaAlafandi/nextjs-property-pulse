@@ -1,4 +1,4 @@
-import {connectDB,disconnectDB} from "@/config/database";
+import {connectDB} from "@/config/database";
 import User from "@/modules/User";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -34,8 +34,6 @@ export const authOptions = {
             image: profile.picture,
           });
         }
-        // 4. Disconnect Database
-        disconnectDB();
         // 4. Return true to allow sign in
         return true;
       },
