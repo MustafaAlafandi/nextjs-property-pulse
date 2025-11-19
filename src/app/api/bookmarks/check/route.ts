@@ -1,15 +1,18 @@
-import { connectDB, disconnectDB } from "@/config/database";
+import { connectDB } from "@/config/database";
+import Property from "@/modules/Property";
 import User from "@/modules/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 
 export const dynamic = "force-dynamic";
+
+// POST /api/bookmarks/check
 export const POST = async (request: Request) => {
   try {
     await connectDB();
     const { propertyId } = await request.json();
     const sessionUser = await getSessionUser();
     let userId;
-    
+
     if (process.env.NEXT_PUBLIC_REGESTRING_ADDED === "true") {
       if (!sessionUser || !sessionUser.userId) {
         return new Response("User ID is required", {
@@ -27,7 +30,7 @@ export const POST = async (request: Request) => {
     // Check if property is bookmarked
     let isBookmarked = user.bookmarks.includes(propertyId);
 
-    return new Response(JSON.stringify({isBookmarked }), {
+    return new Response(JSON.stringify({ isBookmarked }), {
       status: 200,
     });
   } catch (err) {

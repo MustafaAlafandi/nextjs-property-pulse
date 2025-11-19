@@ -231,7 +231,7 @@ function Navbar() {
                     </Link>
                     <Link
                       onClick = {setIsProfileMenuOpen.bind(null,false)}
-                      href="/property/save"
+                      href="/properties/save"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
                       tabIndex={-1}
