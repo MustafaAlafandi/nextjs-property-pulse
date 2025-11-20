@@ -12,7 +12,7 @@ function PropertySearchForm() {
     if(location === '' && propertyType === 'All'){
         router.push('/properties');
     }else{
-        const query = `?location=${location}$propertyType=${propertyType}`;
+        const query = `?location=${location}&propertyType=${propertyType}`;
         router.push(`/properties/search-results${query}`);
     }
   };
@@ -31,7 +31,7 @@ function PropertySearchForm() {
           placeholder="Enter Keywords or Location"
           className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
           value={location}
-          onChange={(e) => setLocation(e.currentTarget.value)}
+          onChange={(e) => setLocation(e.target.value)}
         />
       </div>
       <div className="w-full md:w-2/5 md:pl-2">

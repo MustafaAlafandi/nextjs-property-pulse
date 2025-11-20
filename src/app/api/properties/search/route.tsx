@@ -9,7 +9,7 @@ export const GET = async (request) => {
     const { searchParams } = new URL(request.url);
     const location = searchParams.get("location") || "";
     const propertyType = searchParams.get("propertyType") || "All";
-
+    console.log("propertyType from backend",propertyType);
     const locationPattern = new RegExp(location, "i");
     // Match location pattern against database fields
     let query = {
