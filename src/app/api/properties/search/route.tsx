@@ -1,8 +1,8 @@
 import { connectDB } from "@/config/database";
-import Property from "@/modules/Property";
+import Property from "@/models/Property";
 
 // GET /api/properties/search
-export const GET = async (request) => {
+export const GET = async (request:Request) => {
   try {
     await connectDB();
 
@@ -18,7 +18,7 @@ export const GET = async (request) => {
         { description: locationPattern },
         { "location.street": locationPattern },
         { "location.city": locationPattern },
-        { "location.state": locationPattern },
+        { "locati  on.state": locationPattern },
         { "location.zipcode": locationPattern },
       ],
     };

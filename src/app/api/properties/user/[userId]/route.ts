@@ -1,6 +1,5 @@
 import { connectDB,  } from "@/config/database";
-import Property from "@/modules/Property";
-import { getSessionUser } from "@/utils/getSessionUser";
+import Property from "@/models/Property";
 // GET /api/properties/user/:userId
 export const GET = async (
   requst: Response,

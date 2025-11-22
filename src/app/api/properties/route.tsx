@@ -1,5 +1,5 @@
 import { connectDB } from "@/config/database";
-import Property from "@/modules/Property";
+import Property from "@/models/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudniary";
 // GET /api/properties

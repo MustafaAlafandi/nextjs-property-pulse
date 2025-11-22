@@ -65,7 +65,7 @@ function PropertyPage() {
                 <aside className="space-y-4">
                   <BookMarkButton property={property} />
                   <ShareButtons property={property} />
-                  <PropertyContactForm/>
+                  <PropertyContactForm property={property} />
                 </aside>
               </div>
             </div>
