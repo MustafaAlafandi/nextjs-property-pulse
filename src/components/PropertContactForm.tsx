@@ -1,28 +1,50 @@
 "use client";
 import { propertyProps } from "@/types/basicTypes";
+import { readRouteCacheEntry } from "next/dist/client/components/segment-cache-impl/cache";
 import { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
+import { toast } from "react-toastify";
 function PropertContactForm({ property }: { property: propertyProps }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [phone, setPhone] = useState("");
   const [wasSubmitted, setWasSubmitted] = useState(false);
-  console.log("property",property);
+  console.log("property", property);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const data ={
+    let resData;
+    const data = {
       name,
       email,
       phone,
       message,
-      recipent:property.owner,
-      property:property._id,
+      recipient: property.owner,
+      property: property._id,
+    };
+    console.log("recipent",data.recipient);
+    try {
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      resData = await res.json();
+      if (res.status === 201) {
+        toast.success(resData.message);
+        setWasSubmitted(true);
+      }
+    } catch (err) {
+      console.error("Error sending message:", err);
+      toast.error(resData.message);
+    } finally {
+      setName("");
+      setEmail("");
+      setPhone("");
+      setMessage("");
     }
-
-    console.log(data);
-    setWasSubmitted(true);
   };
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
