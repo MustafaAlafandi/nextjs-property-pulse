@@ -4,7 +4,21 @@ import { readRouteCacheEntry } from "next/dist/client/components/segment-cache-i
 import { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 function PropertContactForm({ property }: { property: propertyProps }) {
+  let session;
+  if (process.env.NEXT_PUBLIC_REGESTRING_ADDED === "true") {
+    session = useSession();
+  } else {
+    session = {
+      user: {
+        id: process.env.NEXT_PUBLIC_TEST_PROFILE_ID,
+        name: process.env.NEXT_PUBLIC_TEST_PROFILE_NAME,
+        email: process.env.NEXT_PUBLIC_TEST_PROFILE_EMAIL,
+        image: process.env.NEXT_PUBLIC_TEST_PROFILE_IMAGE,
+      },
+    };
+  }
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -22,7 +36,7 @@ function PropertContactForm({ property }: { property: propertyProps }) {
       recipient: property.owner,
       property: property._id,
     };
-    console.log("recipent",data.recipient);
+    console.log("recipent", data.recipient);
     try {
       const res = await fetch("/api/messages", {
         method: "POST",
@@ -35,6 +49,8 @@ function PropertContactForm({ property }: { property: propertyProps }) {
       if (res.status === 201) {
         toast.success(resData.message);
         setWasSubmitted(true);
+      } else {
+        toast.error(resData.error);
       }
     } catch (err) {
       console.error("Error sending message:", err);
@@ -49,7 +65,9 @@ function PropertContactForm({ property }: { property: propertyProps }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h3 className="text-xl font-bold mb-6">Contact Property Manager</h3>
-      {wasSubmitted ? (
+      {!session ? (
+        <p>You must be logged in to send a message</p>
+      ) : wasSubmitted ? (
         <p className="text-green-500 mb-4">
           Your message has been sent successfully
         </p>

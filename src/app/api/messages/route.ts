@@ -41,7 +41,7 @@ export const POST = async (request: Request) => {
     // Can NOT send message to self
     if (user.id === recipient) {
       return new Response(
-        JSON.stringify({ error: "Cannot send message to self" }),
+        JSON.stringify({ error: "Cannot send message to your self" }),
         { status: 400 }
       );
     }
