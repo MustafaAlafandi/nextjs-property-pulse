@@ -17,7 +17,7 @@ function Properties() {
   );
   const [totalItmes, setTotalItems] = useState(0);
   const fetchData = async (page: number, pageSize: number) => {
-    const data = await fetchProperties(page, pageSize);
+    const data = await fetchProperties({page, pageSize});
     if (data) {
       setProperties(data.properties);
       setTotalItems(data.total);

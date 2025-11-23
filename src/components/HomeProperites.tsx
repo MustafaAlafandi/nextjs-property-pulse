@@ -4,7 +4,7 @@ import { propertyProps } from "@/types/basicTypes";
 import { fetchProperties } from "@/utils/requests";
 async function HomeProperites() {
   let recentProperties: propertyProps[] = [];
-  const data = await fetchProperties(1, 3);
+  const data = await fetchProperties({ page: 1, pageSize: 3 });
   if (data) {
     recentProperties = data.properties;
   }
