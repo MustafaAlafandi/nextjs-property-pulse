@@ -15,6 +15,11 @@ const Messages = () => {
 
         if (res.status === 200) {
           const data = await res.json();
+          data.messages.sort((a: messageProps, b: messageProps) => {
+            if (a.read && !b.read) return 1;
+            if (!a.read && b.read) return -1;
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
           setMessages(data.messages);
         }
       } catch (err) {
@@ -25,7 +30,6 @@ const Messages = () => {
     };
     getMessages();
   }, []);
-  console.log("messages", messages);
   if (loading) return <Spinner loading={loading} />;
   return (
     <section className="bg-blue-50">
