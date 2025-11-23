@@ -6,25 +6,32 @@ import { useGlobalContext } from "@/context/GlobalContext";
 function Message({ message }: { message: messageProps }) {
   const [isRead, setIsRead] = useState(message.read);
   const [isDeleted, setIsDeleted] = useState(false);
-  const {setUnreadCount} = useGlobalContext();
+  const [clickReadToggleLoading, setClickReadToggleLoading] = useState(false);
+  const { setUnreadCount } = useGlobalContext();
   const handleReadClick = async () => {
+    setClickReadToggleLoading(true);
+    if (clickReadToggleLoading) return;
     let response: Response = new Response();
     try {
       response = await fetch(`/api/messages/${message._id}`, {
         method: "PUT",
       });
       if (response.status === 200) {
-        const data:{message:messageProps} = await response.json();
+        const data: { message: messageProps } = await response.json();
         setIsRead(data.message.read);
-        setUnreadCount((prevCount:number) => data.message.read ? prevCount - 1 : prevCount + 1);
+        setUnreadCount((prevCount: number) =>
+          data.message.read ? prevCount - 1 : prevCount + 1
+        );
         toast.success(
           data.message.read ? "Message marked as read" : "Message marked as new"
         );
       }
     } catch (err) {
-      const data:{error:string} = await response.json();
+      const data: { error: string } = await response.json();
       console.error(data?.error || err);
       toast.error(data?.error || "Failed to update message status");
+    } finally {
+      setClickReadToggleLoading(false);
     }
   };
   const handleDelete = async () => {
@@ -40,8 +47,8 @@ function Message({ message }: { message: messageProps }) {
       data = await response.json();
       if (response.status === 200) {
         setIsDeleted(true);
-        if(isRead === false){
-          setUnreadCount((prevCount:number) => prevCount - 1);
+        if (isRead === false) {
+          setUnreadCount((prevCount: number) => prevCount - 1);
         }
         toast.success("Message deleted successfully");
         // Optionally, you can add logic to remove the message from the UI
@@ -94,7 +101,11 @@ function Message({ message }: { message: messageProps }) {
         } py-1 px-3 rounded-md`}
         onClick={handleReadClick}
       >
-        {isRead ? "Mark as New" : "Mark as Read"}
+        {clickReadToggleLoading
+          ? "Loading..."
+          : isRead
+          ? "Mark as New"
+          : "Mark as Read"}
       </button>
       <button
         className="mt-4 bg-red-500 text-white py-1 px-3 rounded-md"
