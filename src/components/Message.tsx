@@ -2,23 +2,27 @@
 import { useState, useEffect } from "react";
 import { messageProps } from "@/types/basicTypes";
 import { toast } from "react-toastify";
+import { useGlobalContext } from "@/context/GlobalContext";
 function Message({ message }: { message: messageProps }) {
   const [isRead, setIsRead] = useState(message.read);
   const [isDeleted, setIsDeleted] = useState(false);
+  const {setUnreadCount} = useGlobalContext();
   const handleReadClick = async () => {
-    let data;
+    let response: Response = new Response();
     try {
-      const response = await fetch(`/api/messages/${message._id}`, {
+      response = await fetch(`/api/messages/${message._id}`, {
         method: "PUT",
       });
-      data = await response.json();
       if (response.status === 200) {
+        const data:{message:messageProps} = await response.json();
         setIsRead(data.message.read);
+        setUnreadCount((prevCount:number) => data.message.read ? prevCount - 1 : prevCount + 1);
         toast.success(
           data.message.read ? "Message marked as read" : "Message marked as new"
         );
       }
     } catch (err) {
+      const data:{error:string} = await response.json();
       console.error(data?.error || err);
       toast.error(data?.error || "Failed to update message status");
     }
@@ -36,6 +40,9 @@ function Message({ message }: { message: messageProps }) {
       data = await response.json();
       if (response.status === 200) {
         setIsDeleted(true);
+        if(isRead === false){
+          setUnreadCount((prevCount:number) => prevCount - 1);
+        }
         toast.success("Message deleted successfully");
         // Optionally, you can add logic to remove the message from the UI
       }

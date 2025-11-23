@@ -10,10 +10,11 @@ export const metadata = {
   description: "Find Your Dream Rental Property",
   keywords: "rental,find rentals, find properties",
 };
-
+import {GlobalProvider} from "@/context/GlobalContext";
 const mainLayout: React.FC<mainLayoutProps> = ({ children }) => {
   return (
     <AuthProvider>
+      <GlobalProvider>
       <html lang="en">
         <body className="flex flex-col min-h-screen">
           <Navbar />
@@ -22,6 +23,7 @@ const mainLayout: React.FC<mainLayoutProps> = ({ children }) => {
           <ToastContainer />
         </body>
       </html>
+      </GlobalProvider>
     </AuthProvider>
   );
 };
