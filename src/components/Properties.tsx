@@ -1,28 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
-import { fetchProperties } from "@/utils/requests";
 import { propertyProps } from "@/types/basicTypes";
 import PropertyCard from "./PropertyCard";
 import Spinner from "./Spinner";
+import { fetchProperties } from "@/utils/requests";
 
 function Properties() {
-  const [properties, setProperties] = useState([]);
+  const [properties, setProperties] = useState<propertyProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(
+    process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE
+      ? parseInt(process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE)
+      : 3
+  );
+  const [totalItmes, setTotalItems] = useState(0);
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const data = await fetchProperties();
-        data.sort((a: propertyProps, b: propertyProps) => {
-          const firstDate: Date = new Date(b.createdAt);
-          const secondDate: Date = new Date(a.createdAt);
-          return secondDate.getTime() - firstDate.getTime();
-        });
-        setProperties(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
+      const data = await fetchProperties(page, pageSize);
+      if (data) {
+        setProperties(data.properties);
+        setTotalItems(data.total);
       }
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -35,9 +35,10 @@ function Properties() {
           <p>No property found</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {properties.map((property) => (
-              <PropertyCard key={property._id} property={property} />
-            ))}
+            {properties &&
+              properties.map((property) => (
+                <PropertyCard key={property._id} property={property} />
+              ))}
           </div>
         )}
       </div>

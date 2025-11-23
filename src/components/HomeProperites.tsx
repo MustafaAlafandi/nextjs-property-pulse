@@ -3,11 +3,11 @@ import PropertyCard from "./PropertyCard";
 import { propertyProps } from "@/types/basicTypes";
 import { fetchProperties } from "@/utils/requests";
 async function HomeProperites() {
-  const recentProperties: propertyProps[] = (
-    (await fetchProperties()) as propertyProps[]
-  )
-    .sort(() => Math.random() - Math.random())
-    .slice(0, 3);
+  let recentProperties: propertyProps[] = [];
+  const data = await fetchProperties(1, 3);
+  if (data) {
+    recentProperties = data.properties;
+  }
   return (
     <>
       <section className="px-4 py-6">

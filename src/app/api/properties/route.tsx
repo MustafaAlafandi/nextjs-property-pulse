@@ -3,12 +3,22 @@ import Property from "@/models/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudniary";
 // GET /api/properties
-export const GET = async () => {
+export const GET = async (request: Request) => {
   try {
     await connectDB();
 
-    const properties = await Property.find({});
-    return new Response(JSON.stringify(properties), {
+    const page = request.nextUrl.searchParams.get("page") || 1;
+    const pageSize =
+      request.nextUrl.searchParams.get("pageSize") ||
+      process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE ||
+      3;
+
+    const skip = (page - 1) * pageSize;
+    const total = await Property.countDocuments({});
+
+    const properties = await Property.find({}).skip(Number(skip)).limit(Number(pageSize));
+
+    return new Response(JSON.stringify({properties,total}), {
       status: 200,
     });
   } catch (err) {
