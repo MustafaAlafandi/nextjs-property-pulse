@@ -4,6 +4,7 @@ import { propertyProps } from "@/types/basicTypes";
 import PropertyCard from "./PropertyCard";
 import Spinner from "./Spinner";
 import { fetchProperties } from "@/utils/requests";
+import Pagination from "./Pagination";
 
 function Properties() {
   const [properties, setProperties] = useState<propertyProps[]>([]);
@@ -12,20 +13,33 @@ function Properties() {
   const [pageSize, setPageSize] = useState(
     process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE
       ? parseInt(process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE)
-      : 3
+      : 9
   );
   const [totalItmes, setTotalItems] = useState(0);
+  const fetchData = async (page: number, pageSize: number) => {
+    const data = await fetchProperties(page, pageSize);
+    if (data) {
+      setProperties(data.properties);
+      setTotalItems(data.total);
+    }
+    setLoading(false);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchProperties(page, pageSize);
-      if (data) {
-        setProperties(data.properties);
-        setTotalItems(data.total);
+    fetchData(page, pageSize);
+  }, [page, pageSize]);
+  const handlePageChange = async (forward: boolean) => {
+    if (forward) {
+      if (page + 1 <= Math.ceil(totalItmes / pageSize)) {
+        await fetchData(page + 1, pageSize);
+        setPage((pre) => pre + 1);
       }
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+    } else {
+      if (page - 1 >= 1) {
+        await fetchData(page - 1, pageSize);
+        setPage((pre) => pre - 1);
+      }
+    }
+  };
   return loading ? (
     <Spinner loading={loading} />
   ) : (
@@ -41,6 +55,12 @@ function Properties() {
               ))}
           </div>
         )}
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          totalItems={totalItmes}
+          onPageChange={handlePageChange}
+        />
       </div>
     </section>
   );
