@@ -1,8 +1,7 @@
 import { connectDB } from "@/config/database";
-// import {ObjectId} from "mongodb"
-import Message from "@/models/Message";
+import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
-
+import Message from "@/models/Message";
 export const dynamic = "force-dynamic";
 // GET /api/messages
 export const GET = async () => {
@@ -35,10 +34,9 @@ export const GET = async () => {
     } else {
       userId = sessionUser.user.id;
     }
-    const messages = await Message.find({ recipient: userId})
+    const messages = await Message.find({ recipient: userId })
       .populate("sender", "username")
       .populate("property", "name");
-    console.log("messages",messages);
     return new Response(JSON.stringify({ messages }), {
       status: 200,
     });

@@ -68,7 +68,6 @@ export interface propertyDetailsProps {
   property: propertyProps;
 }
 
-
 export interface amenityCheckBoxProps {
   amenity: amenityProps;
 }
@@ -77,4 +76,22 @@ export interface amenityProps {
   value: string;
   isChecked: boolean;
   changeHandler: ChangeEventHandler;
+}
+
+export interface messageProps {
+  _id: string;
+  sender: {
+    _id: string;
+    username: string;
+  };
+  recipient: string;
+  property: {
+    _id: string;
+    name: string;
+  };
+  name: string;
+  email: string;
+  phone: string;
+  body: string;
+  createdAt: Date;
 }
