@@ -20,7 +20,7 @@ function Navbar() {
     signOutHandler = () => {
       setIsProfileMenuOpen(false);
       signOut();
-    };  
+    };
   } else {
     if (isLoggedIn) {
       session = {
@@ -38,16 +38,17 @@ function Navbar() {
       setIsLoggedIn(true);
       localStorage.setItem("isLoggedIn", "true");
     };
-    signOutHandler = ()=>{
+    signOutHandler = () => {
       setIsProfileMenuOpen(false);
       setIsLoggedIn(false);
       localStorage.setItem("isLoggedIn", "false");
-    }
+    };
   }
   const profileImage = session?.user?.image;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [providers, setProviders] = useState(null);
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
 
   const pathname = usePathname();
   const tabsName = ["Home", "Properties", "Add Property"];
@@ -65,13 +66,28 @@ function Navbar() {
       const res = await getProviders();
       setProviders(res);
     };
+    const getUnreadMessagesCount = async () => {
+      let data;
+      try {
+        const res = await fetch("/api/messages/unread-count");
+        data = await res.json();
+        if (res.status === 200) {
+          setUnreadMessagesCount(data.count);
+        }
+      } catch (err) {
+        console.log(data?.error || err);
+      }
+    };
     setAuthProviders();
     if (process.env.NEXT_PUBLIC_REGESTRING_ADDED !== "true") {
       setIsLoggedIn(
         localStorage.getItem("isLoggedIn") == "true" ? true : false
       );
     }
-  }, []);
+    if (isLoggedIn) {
+      getUnreadMessagesCount();
+    }
+  }, [session]);
 
   return (
     <nav className="bg-blue-700 border-b border-blue-500">
@@ -180,9 +196,11 @@ function Navbar() {
                     />
                   </svg>
                 </button>
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                  2{/* Replace with the actual number of notifications */}
-                </span>
+                {unreadMessagesCount > 0 && (
+                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                    {unreadMessagesCount}
+                  </span>
+                )}
               </Link>
               {/* Profile dropdown button */}
               <div className="relative ml-3">
@@ -220,7 +238,7 @@ function Navbar() {
                     tabIndex={-1}
                   >
                     <Link
-                      onClick = {setIsProfileMenuOpen.bind(null,false)}
+                      onClick={setIsProfileMenuOpen.bind(null, false)}
                       href="/profile"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
@@ -230,7 +248,7 @@ function Navbar() {
                       Your Profile
                     </Link>
                     <Link
-                      onClick = {setIsProfileMenuOpen.bind(null,false)}
+                      onClick={setIsProfileMenuOpen.bind(null, false)}
                       href="/properties/save"
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
