@@ -93,5 +93,6 @@ export interface messageProps {
   email: string;
   phone: string;
   body: string;
+  read: boolean;
   createdAt: Date;
 }

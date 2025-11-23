@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 import User from "./User";
-import Property from "./property";
+import Property from "./Property";
 const MessageShema = new Schema(
   {
     sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -10,6 +10,7 @@ const MessageShema = new Schema(
     email: { type: String, required: [true, "Email is required"] },
     phone: { type: String, required: [true, "Phone is required"] },
     body: { type: String, required: true },
+    read: { type: Boolean, default: false },
   },
   {
     timestamps: true,
