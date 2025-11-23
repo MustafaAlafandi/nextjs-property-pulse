@@ -4,20 +4,47 @@ import { messageProps } from "@/types/basicTypes";
 import { toast } from "react-toastify";
 function Message({ message }: { message: messageProps }) {
   const [isRead, setIsRead] = useState(message.read);
+  const [isDeleted, setIsDeleted] = useState(false);
   const handleReadClick = async () => {
     let data;
-    try{
-      const response = await fetch(`/api/messages/${message._id}`, {method: 'PUT'});
+    try {
+      const response = await fetch(`/api/messages/${message._id}`, {
+        method: "PUT",
+      });
       data = await response.json();
-      if(response.status === 200){
+      if (response.status === 200) {
         setIsRead(data.message.read);
-        toast.success(data.message.read ? "Message marked as read" : "Message marked as new");
+        toast.success(
+          data.message.read ? "Message marked as read" : "Message marked as new"
+        );
       }
-    }catch(err){ 
+    } catch (err) {
       console.error(data?.error || err);
       toast.error(data?.error || "Failed to update message status");
     }
-  }
+  };
+  const handleDelete = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this message?"
+    );
+    if (!confirm) return;
+    let data;
+    try {
+      const response = await fetch(`/api/messages/${message._id}`, {
+        method: "DELETE",
+      });
+      data = await response.json();
+      if (response.status === 200) {
+        setIsDeleted(true);
+        toast.success("Message deleted successfully");
+        // Optionally, you can add logic to remove the message from the UI
+      }
+    } catch (err) {
+      console.error(data?.error || err);
+      toast.error(data?.error || "Failed to delete message");
+    }
+  };
+  if (isDeleted) return null;
   return (
     <div className="relative bg-white p-4 rounded-md shadow-md border border-gray-200">
       {!isRead && (
@@ -62,7 +89,10 @@ function Message({ message }: { message: messageProps }) {
       >
         {isRead ? "Mark as New" : "Mark as Read"}
       </button>
-      <button className="mt-4 bg-red-500 text-white py-1 px-3 rounded-md">
+      <button
+        className="mt-4 bg-red-500 text-white py-1 px-3 rounded-md"
+        onClick={handleDelete}
+      >
         Delete
       </button>
     </div>
