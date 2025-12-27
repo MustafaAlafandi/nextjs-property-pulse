@@ -12,12 +12,12 @@ function Properties() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(
     process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE
-      ? parseInt(process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE)
-      : 9
+      ? Number(process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE)
+      : 3
   );
   const [totalItmes, setTotalItems] = useState(0);
   const fetchData = async (page: number, pageSize: number) => {
-    const data = await fetchProperties({page, pageSize});
+    const data = await fetchProperties({ page, pageSize });
     if (data) {
       setProperties(data.properties);
       setTotalItems(data.total);

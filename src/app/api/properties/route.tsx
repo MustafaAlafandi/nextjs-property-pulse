@@ -2,23 +2,23 @@ import { connectDB } from "@/config/database";
 import Property from "@/models/Property";
 import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudniary";
+import { NextRequest } from "next/server";
 // GET /api/properties
-export const GET = async (request: Request) => {
+export const GET = async (request: NextRequest) => {
   try {
     await connectDB();
-
-    const page = request.nextUrl.searchParams.get("page") || 1;
-    const pageSize =
-      request.nextUrl.searchParams.get("pageSize") ||
-      process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE ||
-      3;
+    const searchParamsPage = Number(request.nextUrl.searchParams.get("page"));
+    const page = Number.isNaN(searchParamsPage) ? 1 : searchParamsPage;
+    const searchParamsPageSize = Number(request.nextUrl.searchParams.get("pageSize"));
+    const envPageSize = Number(process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE);
+    const pageSize = Number.isNaN(searchParamsPageSize) ? Number.isNaN(envPageSize) ? 9 : envPageSize : searchParamsPageSize;
 
     const skip = (page - 1) * pageSize;
     const total = await Property.countDocuments({});
-  
+
     const properties = await Property.find({}).skip(Number(skip)).limit(Number(pageSize));
 
-    return new Response(JSON.stringify({properties,total}), {
+    return new Response(JSON.stringify({ properties, total }), {
       status: 200,
     });
   } catch (err) {

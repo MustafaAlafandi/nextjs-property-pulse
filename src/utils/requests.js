@@ -2,7 +2,7 @@ const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
 export async function fetchProperties({
   page = 1,
-  pageSize = process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE || 9,
+  pageSize = process.env.NEXT_PUBLIC_NUMBER_OF_PROPERTIES_PER_PAGE || 3,
   featured = false,
 }) {
   if (!apiDomain) return;
